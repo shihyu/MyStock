@@ -43,12 +43,29 @@ def main():
 
     #print len(datatable)
 
+    tables = []
+
     for l in datatable:
         #if l.find(u"獲　利　狀　況") != -1:
         if l.find(u"\u8fd1&nbsp;10&nbsp;\u5e74&nbsp;\u80a1&nbsp;\u5229&nbsp;\u653f&nbsp;\u7b56") != -1 or \
            l.find(u'\u7372\u3000\u5229\u3000\u72c0\u3000\u6cc1') != -1:
-            print l.encode('utf-8')
+            tables.append(l)
+            #print l.encode('utf-8')
 
+    #print len(tables)
+
+    regex = re.compile("<tr align='center'.*</tr>")
+
+    for t in tables:
+        datarow = regex.findall(t)
+        string = datarow[0].strip()
+        string = string.replace("</td>"," ")
+        datalist = string.split('</tr>')
+        print len(datalist)
+        print datalist
+       # regex = re.compile("<td>(\S+)")
+        #data = regex.findall(datalist)
+        #print data
 
 if __name__ == "__main__":
     main()
