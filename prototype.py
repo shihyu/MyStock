@@ -168,7 +168,7 @@ def OutputToHtml():
         myFile.write('<table style="text-align: left; height: 30px; width: 876px;" border="1" cellpadding="2" cellspacing="2">')
         myFile.write('<tbody>')
         myFile.write('<tr>')
-        myFile.write('<td style="background-color: rgb(102, 255, 255); text-align: center; width: 122px;">名 稱</td>')
+        myFile.write('<td style="background-color: rgb(102, 255, 255); text-align: center; width: 140px;">名 稱</td>')
         myFile.write('<td style="background-color: rgb(102, 255, 255); text-align: center; width: 117px;">日 期</td>')
         myFile.write('<td style="background-color: rgb(102, 255, 255); text-align: center; width: 117px;">成 交價</td>')
         myFile.write('<td style="background-color: rgb(102, 255, 255); text-align: center; width: 117px;">合 理價</td>')
