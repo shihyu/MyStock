@@ -61,11 +61,17 @@ def main():
         string = datarow[0].strip()
         string = string.replace("</td>"," ")
         datalist = string.split('</tr>')
-        print len(datalist)
-        print datalist
-       # regex = re.compile("<td>(\S+)")
-        #data = regex.findall(datalist)
+        #print len(datalist)
+        #print type(datalist)
+        str_convert = ''.join(datalist)
+        #print type(str_convert)
+        regex = re.compile("<td>(\S+)")
+        data = regex.findall(str_convert)
         #print data
+
+        for i in data:
+            print i
+        #print data.encode('utf-8')
 
 if __name__ == "__main__":
     main()
