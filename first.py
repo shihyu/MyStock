@@ -54,24 +54,24 @@ def main():
 
     #print len(tables)
 
-    regex = re.compile("<tr align='center'.*</tr>")
 
     for t in tables:
+        regex = re.compile("<tr align='center'.*</tr>")
         datarow = regex.findall(t)
         string = datarow[0].strip()
         string = string.replace("</td>"," ")
         datalist = string.split('</tr>')
-        #print len(datalist)
         #print type(datalist)
+        #print len(datalist)
+        #print datalist
         str_convert = ''.join(datalist)
         #print type(str_convert)
-        regex = re.compile("<td>(\S+)")
+        regex = re.compile("<td\s*\S*>(\S+)")
         data = regex.findall(str_convert)
         #print data
 
         for i in data:
             print i
-        #print data.encode('utf-8')
 
 if __name__ == "__main__":
     main()
