@@ -48,7 +48,7 @@ def main():
     for l in datatable:
         #if l.find(u"獲　利　狀　況") != -1:
         if l.find(u"\u8fd1&nbsp;10&nbsp;\u5e74&nbsp;\u80a1&nbsp;\u5229&nbsp;\u653f&nbsp;\u7b56") != -1 or \
-           l.find(u'\u7372\u3000\u5229\u3000\u72c0\u3000\u6cc1') != -1:
+            l.find(u'\u7372\u3000\u5229\u3000\u72c0\u3000\u6cc1') != -1:
             tables.append(l)
             #print l.encode('utf-8')
 
@@ -56,17 +56,15 @@ def main():
 
 
     for t in tables:
-        regex = re.compile("<tr align='center'.*</tr>")
+        #print t
+        regex = re.compile("<tr align='center'[\s\S]*?<\/tr>")
         datarow = regex.findall(t)
-        string = datarow[0].strip()
-        string = string.replace("</td>"," ")
-        datalist = string.split('</tr>')
-        #print type(datalist)
-        #print len(datalist)
-        #print datalist
-        str_convert = ''.join(datalist)
-        #print type(str_convert)
-        regex = re.compile("<td\s*\S*>(\S+)")
+        datarow = datarow[1:]
+        str_convert = ''.join(datarow)
+
+        string = str_convert.strip()
+
+        regex = re.compile("<td\s*\S*>(\S+)<\/td>")
         data = regex.findall(str_convert)
         #print data
 
