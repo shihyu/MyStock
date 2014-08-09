@@ -27,19 +27,9 @@ def GetHtmlcode(ID):
     #print result
     return result
 
-
-def main():
-    fin = open('StockCode', 'r+')
-    StockCodeList = [str(i)for i in fin.read().splitlines()]
-    fin.close()
-    #print StockCodeList
-    page = GetHtmlcode('2498')
-    #print type(page)
-    #print page.encode('utf-8')
-
+def parse_stock(page):
     regex = re.compile('<table[\s\S]*?<\/table>')
     datatable = regex.findall(page)
-
 
     #print len(datatable)
 
@@ -53,7 +43,6 @@ def main():
             #print l.encode('utf-8')
 
     #print len(tables)
-
 
     for t in tables:
         #print t
@@ -70,6 +59,16 @@ def main():
 
         for i in data:
             print i
+
+def main():
+    fin = open('StockCode', 'r+')
+    StockCodeList = [str(i)for i in fin.read().splitlines()]
+    fin.close()
+    #print StockCodeList
+    page = GetHtmlcode('2498')
+    #print type(page)
+    #print page.encode('utf-8')
+    parse_stock(page)
 
 if __name__ == "__main__":
     main()
