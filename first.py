@@ -48,6 +48,7 @@ def parse_stock(page):
         #print t
         regex = re.compile("<tr align='center'[\s\S]*?<\/tr>")
         datarow = regex.findall(t)
+        print len(datarow)
         datarow = datarow[1:]
         str_convert = ''.join(datarow)
 
@@ -56,6 +57,7 @@ def parse_stock(page):
         regex = re.compile("<td\s*\S*>(\S+)<\/td>")
         data = regex.findall(str_convert)
         #print data
+        print len(data)
 
         for i in data:
             print i
