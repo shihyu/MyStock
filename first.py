@@ -27,40 +27,36 @@ def GetHtmlcode(ID):
     #print result
     return result
 
+def testtest(tables):
+    #print tables.encode('utf-8')
+    regex = re.compile("<tr align='center'[\s\S]*?<\/tr>")
+    datarow = regex.findall(tables)
+    print len(datarow)
+    datarow = datarow[1:]
+    str_convert = ''.join(datarow)
+
+    string = str_convert.strip()
+
+    regex = re.compile("<td\s*\S*>(\S+)<\/td>")
+    data = regex.findall(str_convert)
+    #print data
+    print len(data)
+
+    for i in data:
+        print i
+    
+
 def parse_stock(page):
     regex = re.compile('<table[\s\S]*?<\/table>')
     datatable = regex.findall(page)
-
     #print len(datatable)
 
-    tables = []
-
     for l in datatable:
-        #if l.find(u"獲　利　狀　況") != -1:
-        if l.find(u"\u8fd1&nbsp;10&nbsp;\u5e74&nbsp;\u80a1&nbsp;\u5229&nbsp;\u653f&nbsp;\u7b56") != -1 or \
-            l.find(u'\u7372\u3000\u5229\u3000\u72c0\u3000\u6cc1') != -1:
-            tables.append(l)
-            #print l.encode('utf-8')
+        if l.find(u"\u8fd1&nbsp;10&nbsp;\u5e74&nbsp;\u80a1&nbsp;\u5229&nbsp;\u653f&nbsp;\u7b56") != -1:
+            testtest(l)
+        elif l.find(u'\u7372\u3000\u5229\u3000\u72c0\u3000\u6cc1') != -1:
+            testtest(l)
 
-    #print len(tables)
-
-    for t in tables:
-        #print t
-        regex = re.compile("<tr align='center'[\s\S]*?<\/tr>")
-        datarow = regex.findall(t)
-        print len(datarow)
-        datarow = datarow[1:]
-        str_convert = ''.join(datarow)
-
-        string = str_convert.strip()
-
-        regex = re.compile("<td\s*\S*>(\S+)<\/td>")
-        data = regex.findall(str_convert)
-        #print data
-        print len(data)
-
-        for i in data:
-            print i
 
 def main():
     fin = open('StockCode', 'r+')
