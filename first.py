@@ -3,10 +3,6 @@
 import re
 import urllib2
 
-infolist = ['股票名稱',
-            '股利',
-            '績效']
-
 def GetHtmlcode(ID):
     # Get the webpage's source html code
     source = 'http://goodinfo.tw/StockInfo/StockDetail.asp?STOCK_ID='
@@ -73,9 +69,9 @@ def parse_stock(page):
         elif l.find(u'\u7372\u3000\u5229\u3000\u72c0\u3000\u6cc1') != -1:
             split_html_tags(l, Profit_list)
     
-    data_dict[infolist[0]] = title
-    data_dict[infolist[1]] = Dividends_list
-    data_dict[infolist[2]] = Profit_list
+    data_dict['股票名稱'] = title
+    data_dict['股利'] = Dividends_list
+    data_dict['績效'] = Profit_list
 
     #list_.append(Dividends_list)
     #list_.append(Profit_list)
@@ -84,10 +80,9 @@ def parse_stock(page):
 
 def pasre_stock_value(dict_):
 
-    print dict_[infolist[0]]
-    print dict_[infolist[1]]
-    print dict_[infolist[2]]
-
+    print dict_['股票名稱']
+    print dict_['股利']
+    print dict_['績效']
 
 def main():
     fin = open('StockCode', 'r+')
