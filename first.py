@@ -78,11 +78,31 @@ def parse_stock(page):
         
     return data_dict
 
+# 計算出股票價值 五年的現金值利率 每股淨值 ROE 毛利率
 def pasre_stock_value(dict_):
 
     print dict_['股票名稱']
-    print dict_['股利']
-    print dict_['績效']
+    #print dict_['股利']
+    #print dict_['績效']
+    Dividends_list = []
+    Profit_list = []
+    Evaluation_four_value_list = []
+
+    list_ = dict_['股利']
+    tmp_list = []
+
+    for i in range(0, len(list_) -1):
+        tmp_list.append(list_[i])
+        if ((i + 1) % list_[-1] == 0):
+            Dividends_list.append(tmp_list)
+            tmp_list = []
+
+
+    for i in Dividends_list:
+        print i
+
+    list_ = dict_['績效']
+
 
 def main():
     fin = open('StockCode', 'r+')
