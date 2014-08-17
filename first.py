@@ -3,6 +3,10 @@
 import re
 import urllib2
 
+infolist = ['股票名稱',
+            '股利',
+            '績效']
+
 def GetHtmlcode(ID):
     # Get the webpage's source html code
     source = 'http://goodinfo.tw/StockInfo/StockDetail.asp?STOCK_ID='
@@ -50,13 +54,15 @@ def split_html_tags(tables, list_):
 
 def parse_stock(page):
     regex = re.compile("\<title\>(.*)\<\/title\>")
-    titile = regex.findall(page)[0]
-    print titile[:titile.find('-')].strip()
+    title = regex.findall(page)[0]
+    title = title[:title.find('-')].strip()
+    #print title
 
     regex = re.compile('<table[\s\S]*?<\/table>')
     datatable = regex.findall(page)
     #print len(datatable)
 
+    data_dict = {}
     Profit_list = []
     Dividends_list = []
     list_ = []
@@ -67,15 +73,20 @@ def parse_stock(page):
         elif l.find(u'\u7372\u3000\u5229\u3000\u72c0\u3000\u6cc1') != -1:
             split_html_tags(l, Profit_list)
     
-    list_.append(Dividends_list)
-    list_.append(Profit_list)
+    data_dict[infolist[0]] = title
+    data_dict[infolist[1]] = Dividends_list
+    data_dict[infolist[2]] = Profit_list
+
+    #list_.append(Dividends_list)
+    #list_.append(Profit_list)
         
-    return list_
+    return data_dict
 
-def pasre_stock_value(list_):
+def pasre_stock_value(dict_):
 
-    for i in list_:
-        print i
+    print dict_[infolist[0]]
+    print dict_[infolist[1]]
+    print dict_[infolist[2]]
 
 
 def main():
@@ -84,8 +95,8 @@ def main():
     fin.close()
 
     page = GetHtmlcode('2498')
-    list_ = parse_stock(page)
-    pasre_stock_value(list_)
+    dict_ = parse_stock(page)
+    pasre_stock_value(dict_)
 
 if __name__ == "__main__":
     main()
