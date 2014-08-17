@@ -27,8 +27,7 @@ def GetHtmlcode(ID):
     #print result
     return result
 
-def testtest(tables, list_):
-    
+def split_html_tags(tables, list_):
     #print tables.encode('utf-8')
     regex = re.compile("<tr align='center'[\s\S]*?<\/tr>")
     datarow = regex.findall(tables)
@@ -46,44 +45,47 @@ def testtest(tables, list_):
     for i in data:
         list_.append(i)
 
-
     #print len(data) / (len(datarow) -1)
     list_.append(len(data) / (len(datarow) -1))
 
-    '''
-    for i in list_:
-        print i
-    '''
-
 def parse_stock(page):
+    regex = re.compile("\<title\>(.*)\<\/title\>")
+    titile = regex.findall(page)[0]
+    print titile[:titile.find('-')].strip()
+
     regex = re.compile('<table[\s\S]*?<\/table>')
     datatable = regex.findall(page)
     #print len(datatable)
 
     Profit_list = []
     Dividends_list = []
+    list_ = []
 
     for l in datatable:
         if l.find(u"\u8fd1&nbsp;10&nbsp;\u5e74&nbsp;\u80a1&nbsp;\u5229&nbsp;\u653f&nbsp;\u7b56") != -1:
-            testtest(l, Dividends_list)
+            split_html_tags(l, Dividends_list)
         elif l.find(u'\u7372\u3000\u5229\u3000\u72c0\u3000\u6cc1') != -1:
-            testtest(l, Profit_list)
+            split_html_tags(l, Profit_list)
+    
+    list_.append(Dividends_list)
+    list_.append(Profit_list)
+        
+    return list_
 
-    for i in Dividends_list:
+def pasre_stock_value(list_):
+
+    for i in list_:
         print i
 
-    for i in Profit_list: 
-        print i
 
 def main():
     fin = open('StockCode', 'r+')
     StockCodeList = [str(i)for i in fin.read().splitlines()]
     fin.close()
-    #print StockCodeList
+
     page = GetHtmlcode('2498')
-    #print type(page)
-    #print page.encode('utf-8')
-    parse_stock(page)
+    list_ = parse_stock(page)
+    pasre_stock_value(list_)
 
 if __name__ == "__main__":
     main()
