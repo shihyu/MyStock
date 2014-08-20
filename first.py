@@ -103,6 +103,15 @@ def pasre_stock_value(dict_):
 
     list_ = dict_['績效']
 
+    for i in range(0, len(list_) -1):
+        tmp_list.append(list_[i])
+        if ((i + 1) % list_[-1] == 0):
+            Profit_list.append(tmp_list)
+            tmp_list = []
+
+    for i in Profit_list:
+        print i
+
 
 def main():
     fin = open('StockCode', 'r+')
