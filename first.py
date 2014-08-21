@@ -98,8 +98,15 @@ def pasre_stock_value(dict_):
             tmp_list = []
 
 
-    for i in Dividends_list:
-        print i
+    sum = 0
+    # 計算五年股利平均
+    for i in range(5):
+        sum += float(Dividends_list[i][3])
+        #print Dividends_list[i]
+        #print Dividends_list[i][3]
+
+    print sum / 5.0
+
 
     list_ = dict_['績效']
 
