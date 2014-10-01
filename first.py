@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import re
 import urllib2
+import csv
 
 def GetHtmlcode(ID):
     # Get the webpage's source html code
@@ -107,6 +108,7 @@ def pasre_stock_value(dict_):
     sum = 0
     # 計算五年股利平均
     for i in range(5):
+        print float(Dividends_list[i][3])
         sum += float(Dividends_list[i][3])
         #print Dividends_list[i]
         #print Dividends_list[i][3]
@@ -125,6 +127,16 @@ def pasre_stock_value(dict_):
     for i in Profit_list:
         print i
 
+def TWSE():
+    TWSEURL = 'http://www.twse.com.tw/ch/trading/exchange/FMNPTK/FMNPTK2.php?STK_NO=2103&myear=2014&mmon=09&type=csv'
+    tmp_list = []
+
+    for line in urllib2.urlopen(TWSEURL).readlines():
+        if re.match(r'^\d+\,\".*"\,.*\,"', line.strip()):
+            tmp_list.append(line)
+
+    for i in csv.reader(tmp_list):
+        print i
 
 def main():
     fin = open('StockCode', 'r+')
@@ -134,6 +146,8 @@ def main():
     page = GetHtmlcode('2103')
     dict_ = parse_stock(page)
     pasre_stock_value(dict_)
+
+    TWSE()
 
 if __name__ == "__main__":
     main()
