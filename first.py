@@ -29,6 +29,7 @@ def GetHtmlcode(ID):
 
 def split_html_tags(tables, list_):
     #print tables.encode('utf-8')
+    #print tables
     regex = re.compile("<tr align='center'[\s\S]*?<\/tr>")
     datarow = regex.findall(tables)
     #print len(datarow)
@@ -36,9 +37,10 @@ def split_html_tags(tables, list_):
     str_convert = ''.join(datarow)
 
     string = str_convert.strip()
+    #print string
 
     regex = re.compile("<td\s*\S*>(\S+)<\/td>")
-    data = regex.findall(str_convert)
+    data = regex.findall(string)
     #print data
     #print len(data)
 
@@ -56,6 +58,7 @@ def parse_stock(page):
 
     regex = re.compile('<table[\s\S]*?<\/table>')
     datatable = regex.findall(page)
+    #print datatable
     #print len(datatable)
 
     data_dict = {}
@@ -64,14 +67,17 @@ def parse_stock(page):
     list_ = []
 
     for l in datatable:
-        if l.find(u"\u8fd1&nbsp;10&nbsp;\u5e74&nbsp;\u80a1&nbsp;\u5229&nbsp;\u653f&nbsp;\u7b56") != -1:
-            split_html_tags(l, Dividends_list)
-        elif l.find(u'\u7372\u3000\u5229\u3000\u72c0\u3000\u6cc1') != -1:
+        if l.find(u"\u5408&nbsp;\u4f75&nbsp;\u7372&nbsp;\u5229&nbsp;\u72c0&nbsp;\u6cc1") != -1:
             split_html_tags(l, Profit_list)
+        elif l.find(u'\u8fd1&nbsp;10&nbsp;\u5e74&nbsp;\u80a1&nbsp;\u5229&nbsp;\u653f&nbsp;\u7b56') != -1:
+            #print l
+            split_html_tags(l, Dividends_list)
     
     data_dict['股票名稱'] = title
     data_dict['股利'] = Dividends_list
     data_dict['績效'] = Profit_list
+
+    #print data_dict['績效']
 
     #list_.append(Dividends_list)
     #list_.append(Profit_list)
@@ -125,7 +131,7 @@ def main():
     StockCodeList = [str(i)for i in fin.read().splitlines()]
     fin.close()
 
-    page = GetHtmlcode('2498')
+    page = GetHtmlcode('2103')
     dict_ = parse_stock(page)
     pasre_stock_value(dict_)
 
