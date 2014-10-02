@@ -42,14 +42,9 @@ def split_html_tags(tables, list_):
 
     regex = re.compile("<td\s*\S*>(\S+)<\/td>")
     data = regex.findall(string)
-    #print data
-    #print len(data)
 
     for i in data:
         list_.append(i)
-
-    #print len(data) / (len(datarow) -1)
-    list_.append(len(data) / (len(datarow) -1))
 
 def parse_stock(page):
     regex = re.compile("\<title\>(.*)\<\/title\>")
@@ -98,34 +93,41 @@ def pasre_stock_value(dict_):
     list_ = dict_['股利']
     tmp_list = []
 
-    for i in range(0, len(list_) -1):
+    for i in range(0, len(list_)):
         tmp_list.append(list_[i])
-        if ((i + 1) % list_[-1] == 0):
+        if ((i + 1) % 4 == 0):
             Dividends_list.append(tmp_list)
             tmp_list = []
 
 
+    #print Dividends_list 
+    
+    if len(Dividends_list) >= 5:
+        Dividends_year = 5
+    else:
+        Dividends_year = len(Dividends_list)
+
     sum = 0
     # 計算五年股利平均
-    for i in range(5):
+    for i in range(0, Dividends_year):
         print float(Dividends_list[i][3])
         sum += float(Dividends_list[i][3])
         #print Dividends_list[i]
         #print Dividends_list[i][3]
 
-    print sum / 5.0
-
+    print sum / float(Dividends_year)
 
     list_ = dict_['績效']
 
-    for i in range(0, len(list_) -1):
+    for i in range(0, len(list_)):
         tmp_list.append(list_[i])
-        if ((i + 1) % list_[-1] == 0):
+        if ((i + 1) % 7 == 0):
             Profit_list.append(tmp_list)
             tmp_list = []
 
     for i in Profit_list:
         print i
+
 
 def TWSE():
     TWSEURL = 'http://www.twse.com.tw/ch/trading/exchange/FMNPTK/FMNPTK2.php?STK_NO=2103&myear=2014&mmon=09&type=csv'
