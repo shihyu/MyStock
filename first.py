@@ -49,6 +49,11 @@ def split_html_tags(tables, list_):
     for i in data:
         list_.append(i)
 
+
+def group_list(l,block):
+    size = len(l)
+    return [l[i:i+block] for i in range(0,size,block)]
+
 def parse_stock(page):
     regex = re.compile("\<title\>(.*)\<\/title\>")
     title = regex.findall(page)[0]
@@ -78,6 +83,23 @@ def parse_stock(page):
             split_html_tags(l, StockAssetsStatus_list)
 
     #print StockAssetsStatus_list
+
+    Dividends_list = group_list(Dividends_list, 4)
+    Profit_list = group_list(Profit_list, 7)
+    StockAssetsStatus_list = group_list(StockAssetsStatus_list, 8)
+
+    for i in Dividends_list:
+        print i
+
+    print '\n'
+
+    for i in Profit_list:
+        print i
+    print '\n'
+        
+    for i in StockAssetsStatus_list:
+        print i
+    print '\n'
     
     data_dict['股票名稱'] = title
     data_dict['股利'] = Dividends_list
@@ -95,73 +117,26 @@ def parse_stock(page):
 def pasre_stock_value(dict_):
 
     print dict_['股票名稱']
-    #print dict_['股利']
-    #print dict_['績效']
     Dividends_list = []
-    Profit_list = []
-    StockAssetsStatus_list = []
-    Evaluation_four_value_list = []
 
-    list_ = dict_['股利']
-    tmp_list = []
-
-    for i in range(0, len(list_)):
-        tmp_list.append(list_[i])
-        if ((i + 1) % 4 == 0):
-            Dividends_list.append(tmp_list)
-            tmp_list = []
-
-
-    #print Dividends_list 
+    Dividends_list = dict_['股利']
     
     if len(Dividends_list) >= 5:
         Dividends_year = 5
     else:
         Dividends_year = len(Dividends_list)
 
-    sum = 0
+    #print Dividends_list
+    sum = 0.0
     # 計算五年股利平均
     for i in range(0, Dividends_year):
-        print float(Dividends_list[i][3])
-        sum += float(Dividends_list[i][3])
-        #print Dividends_list[i]
-        #print Dividends_list[i][3]
+        #print float(Dividends_list[i][3])
+        sum += float(Dividends_list[i][3])  
 
     print sum / float(Dividends_year)
-
-    list_ = dict_['績效']
-
-    for i in range(0, len(list_)):
-        tmp_list.append(list_[i])
-        if ((i + 1) % 7 == 0):
-            Profit_list.append(tmp_list)
-            tmp_list = []
-
-    dict_['績效'] = Profit_list
-
-    for i in Profit_list:
-        print i
-
     print '\n'
 
-    list_ = dict_['資產負債狀況']
-
-    #print list_
-
-    for i in range(0, len(list_)):
-        #print list_[i]
-        tmp_list.append(list_[i])
-        if ((i + 1) % 8 == 0):
-            StockAssetsStatus_list.append(tmp_list)
-            tmp_list = []
-    
-    dict_['資產負債狀況'] = StockAssetsStatus_list
-
-    for i in StockAssetsStatus_list:
-        print i
-
-    print '\n'
-
+    return sum
 
 
 def TWSE():
@@ -188,8 +163,8 @@ def PBR(TWSE_list, data_dict):
     #for row in TWSE_list:
         #print row[6] 
     
-    for row in StockAssetsStatus_list:
-        print row[7]
+    #for row in StockAssetsStatus_list:
+        #print row[7]
 
 
 def main():
