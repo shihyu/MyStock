@@ -33,6 +33,7 @@ def split_html_tags(tables, list_):
     #print tables
     regex = re.compile("<tr align='center'[\s\S]*?<\/tr>")
     datarow = regex.findall(tables)
+    #print datarow
     #print len(datarow)
     datarow = datarow[1:]
     str_convert = ''.join(datarow)
@@ -40,8 +41,10 @@ def split_html_tags(tables, list_):
     string = str_convert.strip()
     #print string
 
-    regex = re.compile("<td\s*\S*>(\S+)<\/td>")
+    regex = re.compile('<td[\S\s]*?>(\w+|[0-9]+\.[0-9]+]*)<\/td>')
     data = regex.findall(string)
+
+    #print data
 
     for i in data:
         list_.append(i)
@@ -53,6 +56,7 @@ def parse_stock(page):
     #print title
 
     regex = re.compile('<table[\s\S]*?<\/table>')
+    #print page
     datatable = regex.findall(page)
     #print datatable
     #print len(datatable)
@@ -60,6 +64,7 @@ def parse_stock(page):
     data_dict = {}
     Profit_list = []
     Dividends_list = []
+    StockAssetsStatus = []
     list_ = []
 
     for l in datatable:
@@ -68,10 +73,16 @@ def parse_stock(page):
         elif l.find(u'\u8fd1&nbsp;10&nbsp;\u5e74&nbsp;\u80a1&nbsp;\u5229&nbsp;\u653f&nbsp;\u7b56') != -1:
             #print l
             split_html_tags(l, Dividends_list)
+        elif l.find(u'\u5408\u4f75\u8cc7\u7522\u8ca0\u50b5\u72c0\u6cc1') != -1:
+            #print l
+            split_html_tags(l, StockAssetsStatus)
+
+    #print StockAssetsStatus
     
     data_dict['股票名稱'] = title
     data_dict['股利'] = Dividends_list
     data_dict['績效'] = Profit_list
+    data_dict['資產負債狀況'] = StockAssetsStatus
 
     #print data_dict['績效']
 
@@ -88,6 +99,7 @@ def pasre_stock_value(dict_):
     #print dict_['績效']
     Dividends_list = []
     Profit_list = []
+    StockAssetsStatus = []
     Evaluation_four_value_list = []
 
     list_ = dict_['股利']
@@ -127,6 +139,25 @@ def pasre_stock_value(dict_):
 
     for i in Profit_list:
         print i
+
+    print '\n'
+
+    list_ = dict_['資產負債狀況']
+
+    #print list_
+
+    for i in range(0, len(list_)):
+        #print list_[i]
+        tmp_list.append(list_[i])
+        if ((i + 1) % 8 == 0):
+            StockAssetsStatus.append(tmp_list)
+            tmp_list = []
+
+    for i in StockAssetsStatus:
+        print i
+
+    print '\n'
+
 
 
 def TWSE():
