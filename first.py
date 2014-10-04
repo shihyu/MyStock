@@ -64,7 +64,7 @@ def parse_stock(page):
     data_dict = {}
     Profit_list = []
     Dividends_list = []
-    StockAssetsStatus = []
+    StockAssetsStatus_list = []
     list_ = []
 
     for l in datatable:
@@ -75,14 +75,14 @@ def parse_stock(page):
             split_html_tags(l, Dividends_list)
         elif l.find(u'\u5408\u4f75\u8cc7\u7522\u8ca0\u50b5\u72c0\u6cc1') != -1:
             #print l
-            split_html_tags(l, StockAssetsStatus)
+            split_html_tags(l, StockAssetsStatus_list)
 
-    #print StockAssetsStatus
+    #print StockAssetsStatus_list
     
     data_dict['股票名稱'] = title
     data_dict['股利'] = Dividends_list
     data_dict['績效'] = Profit_list
-    data_dict['資產負債狀況'] = StockAssetsStatus
+    data_dict['資產負債狀況'] = StockAssetsStatus_list
 
     #print data_dict['績效']
 
@@ -99,7 +99,7 @@ def pasre_stock_value(dict_):
     #print dict_['績效']
     Dividends_list = []
     Profit_list = []
-    StockAssetsStatus = []
+    StockAssetsStatus_list = []
     Evaluation_four_value_list = []
 
     list_ = dict_['股利']
@@ -150,10 +150,10 @@ def pasre_stock_value(dict_):
         #print list_[i]
         tmp_list.append(list_[i])
         if ((i + 1) % 8 == 0):
-            StockAssetsStatus.append(tmp_list)
+            StockAssetsStatus_list.append(tmp_list)
             tmp_list = []
 
-    for i in StockAssetsStatus:
+    for i in StockAssetsStatus_list:
         print i
 
     print '\n'
@@ -163,12 +163,17 @@ def pasre_stock_value(dict_):
 def TWSE():
     TWSEURL = 'http://www.twse.com.tw/ch/trading/exchange/FMNPTK/FMNPTK2.php?STK_NO=2103&myear=2014&mmon=09&type=csv'
     tmp_list = []
+    reversed_list = []
 
     for line in urllib2.urlopen(TWSEURL).readlines():
         if re.match(r'^\d+\,\".*"\,.*\,"', line.strip()):
             tmp_list.append(line)
 
     for i in csv.reader(tmp_list):
+        reversed_list.append(i)
+
+    reversed_list = reversed_list[::-1]
+    for i in reversed_list:
         print i
 
 def main():
