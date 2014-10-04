@@ -137,6 +137,8 @@ def pasre_stock_value(dict_):
             Profit_list.append(tmp_list)
             tmp_list = []
 
+    dict_['績效'] = Profit_list
+
     for i in Profit_list:
         print i
 
@@ -152,6 +154,8 @@ def pasre_stock_value(dict_):
         if ((i + 1) % 8 == 0):
             StockAssetsStatus_list.append(tmp_list)
             tmp_list = []
+    
+    dict_['資產負債狀況'] = StockAssetsStatus_list
 
     for i in StockAssetsStatus_list:
         print i
@@ -176,6 +180,18 @@ def TWSE():
     for i in reversed_list:
         print i
 
+    return reversed_list
+
+def PBR(TWSE_list, data_dict):
+    StockAssetsStatus_list = data_dict['資產負債狀況']
+
+    #for row in TWSE_list:
+        #print row[6] 
+    
+    for row in StockAssetsStatus_list:
+        print row[7]
+
+
 def main():
     fin = open('StockCode', 'r+')
     StockCodeList = [str(i)for i in fin.read().splitlines()]
@@ -184,8 +200,8 @@ def main():
     page = GetHtmlcode('2103')
     dict_ = parse_stock(page)
     pasre_stock_value(dict_)
-
-    TWSE()
+    list_ = TWSE()
+    PBR(list_, dict_)
 
 if __name__ == "__main__":
     main()
