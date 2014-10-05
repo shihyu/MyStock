@@ -160,6 +160,12 @@ def TWSE():
 def PBR(TWSE_list, data_dict):
     StockAssetsStatus_list = data_dict['資產負債狀況']
 
+    print '\n'
+
+    for row in StockAssetsStatus_list:
+        if re.match(r'\d{4}', str(row[0])):
+            print row
+
     #for row in TWSE_list:
         #print row[6] 
     
