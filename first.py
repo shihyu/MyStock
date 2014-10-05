@@ -41,7 +41,7 @@ def split_html_tags(tables, list_):
     string = str_convert.strip()
     #print string
 
-    regex = re.compile('<td[\S\s]*?>(\w+|[0-9]+\.[0-9]+]*|[0-9]+\,[0-9]*)<\/td>')
+    regex = re.compile('<td[\S\s]*?>(\w+|[0-9]+\.[0-9]+]*|[0-9]+\,[0-9]*|\-[0-9]+\.[0-9]+]*|\-\d+)<\/td>')
     data = regex.findall(string)
 
     #print data
@@ -140,7 +140,7 @@ def pasre_stock_value(dict_):
 
 
 def TWSE():
-    TWSEURL = 'http://www.twse.com.tw/ch/trading/exchange/FMNPTK/FMNPTK2.php?STK_NO=2103&myear=2014&mmon=09&type=csv'
+    TWSEURL = 'http://www.twse.com.tw/ch/trading/exchange/FMNPTK/FMNPTK2.php?STK_NO=2002&myear=2014&mmon=09&type=csv'
     tmp_list = []
     reversed_list = []
 
@@ -178,7 +178,7 @@ def main():
     StockCodeList = [str(i)for i in fin.read().splitlines()]
     fin.close()
 
-    page = GetHtmlcode('2103')
+    page = GetHtmlcode('2002')
     dict_ = parse_stock(page)
     pasre_stock_value(dict_)
     list_ = TWSE()
