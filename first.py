@@ -41,7 +41,7 @@ def split_html_tags(tables, list_):
     string = str_convert.strip()
     #print string
 
-    regex = re.compile('<td[\S\s]*?>(\w+|[0-9]+\.[0-9]+]*)<\/td>')
+    regex = re.compile('<td[\S\s]*?>(\w+|[0-9]+\.[0-9]+]*|[0-9]+\,[0-9]*)<\/td>')
     data = regex.findall(string)
 
     #print data
