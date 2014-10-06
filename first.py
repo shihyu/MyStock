@@ -133,13 +133,13 @@ def pasre_stock_value(dict_):
         #print float(Dividends_list[i][3])
         sum += float(Dividends_list[i][3])  
 
-    print sum / float(Dividends_year)
+    #print sum / float(Dividends_year)
     print '\n'
 
     return sum
 
 
-def TWSE():
+def TWSE(dict_):
     TWSEURL = 'http://www.twse.com.tw/ch/trading/exchange/FMNPTK/FMNPTK2.php?STK_NO=2002&myear=2014&mmon=09&type=csv'
     tmp_list = []
     reversed_list = []
@@ -155,10 +155,11 @@ def TWSE():
     for i in reversed_list:
         print i
 
-    return reversed_list
+    dict_['歷年股價資訊'] = reversed_list
 
-def PBR(TWSE_list, data_dict):
+def PBR(data_dict):
     StockAssetsStatus_list = data_dict['資產負債狀況']
+    TWSE_list = data_dict['歷年股價資訊']
 
     print '\n'
 
@@ -166,8 +167,9 @@ def PBR(TWSE_list, data_dict):
         if re.match(r'\d{4}', str(row[0])):
             print row
 
-    #for row in TWSE_list:
-        #print row[6] 
+    print '\n'
+    for row in TWSE_list:
+        print row
     
     #for row in StockAssetsStatus_list:
         #print row[7]
@@ -180,9 +182,10 @@ def main():
 
     page = GetHtmlcode('2002')
     dict_ = parse_stock(page)
+    TWSE(dict_)
+
     pasre_stock_value(dict_)
-    list_ = TWSE()
-    PBR(list_, dict_)
+    PBR(dict_)
 
 if __name__ == "__main__":
     main()
