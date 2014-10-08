@@ -202,19 +202,19 @@ def historical_prices(data_dict):
     else:
         year = len(tmp_list)
 
-    sum_1 = 0
-    sum_2 = 0
-    sum_3 = 0
+    cheap_sum = 0
+    expensive_sum = 0
+    nominal_sum = 0
 
     for i in range(0, year):
-        sum_1 += float(TWSE_list[i][6]) # 便宜價
-        sum_2 += float(TWSE_list[i][4]) # 昂貴價
-        sum_3 += float(TWSE_list[i][8]) # 平均價
+        cheap_sum += float(TWSE_list[i][6]) # 便宜價
+        expensive_sum += float(TWSE_list[i][4]) # 昂貴價
+        nominal_sum += float(TWSE_list[i][8]) # 平均價
 
     print '\n'
-    print sum_1 / float(year)
-    print sum_2 / float(year)
-    print sum_3 / float(year)
+    print cheap_sum/ float(year)
+    print expensive_sum / float(year)
+    print nominal_sum / float(year)
 
 
 def main():
