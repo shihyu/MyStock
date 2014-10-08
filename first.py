@@ -41,7 +41,7 @@ def split_html_tags(tables, list_):
     string = str_convert.strip()
     #print string
 
-    regex = re.compile('<td[\S\s]*?>(\w+|[0-9]+\.[0-9]+]*|[0-9]+\,[0-9]*|\-[0-9]+\.[0-9]+]*|\-\d+)<\/td>')
+    regex = re.compile('<td[\S\s]*?>(\w+|[0-9]+\.[0-9]+]*|[0-9]+\,[0-9]*|\-[0-9]+\.[0-9]+]*|\-\d+|\-)<\/td>')
     data = regex.findall(string)
 
     #print data
@@ -116,6 +116,7 @@ def parse_stock(page):
 # 計算出股票價值 五年的現金值利率 每股淨值 ROE 毛利率
 def pasre_stock_value(dict_):
 
+    print '\n'
     print dict_['股票名稱']
     Dividends_list = []
 
@@ -134,13 +135,11 @@ def pasre_stock_value(dict_):
         sum += float(Dividends_list[i][3])  
 
     #print sum / float(Dividends_year)
-    print '\n'
-
     return sum
 
 
 def TWSE(dict_):
-    TWSEURL = 'http://www.twse.com.tw/ch/trading/exchange/FMNPTK/FMNPTK2.php?STK_NO=2002&myear=2014&mmon=09&type=csv'
+    TWSEURL = 'http://www.twse.com.tw/ch/trading/exchange/FMNPTK/FMNPTK2.php?STK_NO=3008&myear=2014&mmon=09&type=csv'
     tmp_list = []
     reversed_list = []
 
@@ -163,9 +162,20 @@ def PBR(data_dict):
 
     print '\n'
 
+    tmp_list = []
     for row in StockAssetsStatus_list:
         if re.match(r'\d{4}', str(row[0])):
-            print row
+            tmp_list.append(row)
+
+    for row in tmp_list:
+        print row
+
+    if len(tmp_list) >= 10 and len(TWSE_list) >= 10:
+        PBR_year = 10
+    else:
+        PBR_year = len(tmp_list)
+
+    print PBR_year
 
     print '\n'
     for row in TWSE_list:
@@ -174,13 +184,20 @@ def PBR(data_dict):
     #for row in StockAssetsStatus_list:
         #print row[7]
 
+    sum = 0
+    for i in range(0, PBR_year):
+        print TWSE_list[i][6] + " / " + tmp_list[i][7]
+        sum += float(TWSE_list[i][6]) / float(tmp_list[i][7])
+
+    print sum / 10.0
+
 
 def main():
     fin = open('StockCode', 'r+')
     StockCodeList = [str(i)for i in fin.read().splitlines()]
     fin.close()
 
-    page = GetHtmlcode('2002')
+    page = GetHtmlcode('3008')
     dict_ = parse_stock(page)
     TWSE(dict_)
 
