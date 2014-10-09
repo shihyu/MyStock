@@ -193,6 +193,41 @@ def PBR(data_dict):
     print '\n'
     print sum / float(PBR_year)
 
+def PER(data_dict):
+    print "\nPER"
+    Profit_list = data_dict['績效']
+    TWSE_list = data_dict['歷年股價資訊']
+
+    tmp_list = []
+    for row in Profit_list:
+        if re.match(r'\d{4}', str(row[0])):
+            tmp_list.append(row)
+
+    for row in tmp_list:
+        print row
+
+    if len(tmp_list) >= 10 and len(TWSE_list) >= 10:
+        year = 10
+    else:
+        year = len(tmp_list)
+
+    print year 
+
+    cheap_sum = 0
+    expensive_sum = 0
+    nominal_sum = 0
+
+    for i in range(0, year):
+        #print TWSE_list[i][6] + " / " + tmp_list[i][6]
+        cheap_sum += float(TWSE_list[i][6]) / float(tmp_list[i][6]) # 便宜價
+        expensive_sum += float(TWSE_list[i][4]) / float(tmp_list[i][6]) # 昂貴價
+        nominal_sum += float(TWSE_list[i][8]) / float(tmp_list[i][6]) # 平均價
+
+    print '\n'
+    print cheap_sum/ float(year)
+    print expensive_sum / float(year)
+    print nominal_sum / float(year)
+
 
 def historical_prices(data_dict):
     TWSE_list = data_dict['歷年股價資訊']
@@ -228,7 +263,7 @@ def main():
 
     pasre_stock_value(dict_)
     PBR(dict_)
-
+    PER(dict_)
     historical_prices(dict_)
 
 if __name__ == "__main__":
