@@ -139,7 +139,7 @@ def pasre_stock_value(dict_):
 
 
 def TWSE(dict_):
-    TWSEURL = 'http://www.twse.com.tw/ch/trading/exchange/FMNPTK/FMNPTK2.php?STK_NO=2103&myear=2014&mmon=09&type=csv'
+    TWSEURL = 'http://www.twse.com.tw/ch/trading/exchange/FMNPTK/FMNPTK2.php?STK_NO=4904&myear=2014&mmon=09&type=csv'
     tmp_list = []
     reversed_list = []
 
@@ -171,11 +171,15 @@ def PBR(data_dict):
         print row
 
     if len(tmp_list) >= 10 and len(TWSE_list) >= 10:
-        PBR_year = 10
+        year = 10
     else:
-        PBR_year = len(tmp_list)
+        if len(tmp_list) > len(TWSE_list):
+            year = len(TWSE_list)
+        else:
+            year = len(tmp_list)
 
-    print PBR_year
+
+    print year
 
     print '\n'
     for row in TWSE_list:
@@ -186,12 +190,12 @@ def PBR(data_dict):
 
     print '\n'
     sum = 0
-    for i in range(0, PBR_year):
+    for i in range(0, year):
         print TWSE_list[i][6] + " / " + tmp_list[i][7]
         sum += float(TWSE_list[i][6]) / float(tmp_list[i][7])
 
     print '\n'
-    print sum / float(PBR_year)
+    print sum / float(year)
 
 def PER(data_dict):
     print "\nPER"
@@ -209,22 +213,32 @@ def PER(data_dict):
     if len(tmp_list) >= 10 and len(TWSE_list) >= 10:
         year = 10
     else:
-        year = len(tmp_list)
+        if len(tmp_list) > len(TWSE_list):
+            year = len(TWSE_list)
+        else:
+            year = len(tmp_list)
 
     print year 
 
     cheap_sum = 0
     expensive_sum = 0
     nominal_sum = 0
+    eps_sum = 0
 
     for i in range(0, year):
-        #print TWSE_list[i][6] + " / " + tmp_list[i][6]
+        #print TWSE_list[i][6] + " / " + tmp_list[i][6] 
+        print('%s / %s = %f' % (TWSE_list[i][6], tmp_list[i][6], float(TWSE_list[i][6]) / float(tmp_list[i][6])))
+        #print('%s / %s +' % (TWSE_list[i][6], tmp_list[i][6]))
+        #print ('%f +' % (float(tmp_list[i][6])))
+        eps_sum += float(tmp_list[i][6])
+        #print float(TWSE_list[i][6]) / float(tmp_list[i][6])
         cheap_sum += float(TWSE_list[i][6]) / float(tmp_list[i][6]) # 便宜價
         expensive_sum += float(TWSE_list[i][4]) / float(tmp_list[i][6]) # 昂貴價
         nominal_sum += float(TWSE_list[i][8]) / float(tmp_list[i][6]) # 平均價
 
     print '\n'
-    print cheap_sum/ float(year)
+    print eps_sum
+    print cheap_sum / float(year)
     print expensive_sum / float(year)
     print nominal_sum / float(year)
 
@@ -235,7 +249,7 @@ def historical_prices(data_dict):
     if len(TWSE_list) >= 10:
         year = 10
     else:
-        year = len(tmp_list)
+        year = len(TWSE_list)
 
     cheap_sum = 0
     expensive_sum = 0
@@ -257,7 +271,7 @@ def main():
     StockCodeList = [str(i)for i in fin.read().splitlines()]
     fin.close()
 
-    page = GetHtmlcode('2103')
+    page = GetHtmlcode('4904')
     dict_ = parse_stock(page)
     TWSE(dict_)
 
