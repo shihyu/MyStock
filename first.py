@@ -139,7 +139,7 @@ def pasre_stock_value(dict_):
 
 
 def TWSE(dict_):
-    TWSEURL = 'http://www.twse.com.tw/ch/trading/exchange/FMNPTK/FMNPTK2.php?STK_NO=4904&myear=2014&mmon=09&type=csv'
+    TWSEURL = 'http://www.twse.com.tw/ch/trading/exchange/FMNPTK/FMNPTK2.php?STK_NO=2103&myear=2014&mmon=09&type=csv'
     tmp_list = []
     reversed_list = []
 
@@ -160,7 +160,7 @@ def PBR(data_dict):
     StockAssetsStatus_list = data_dict['資產負債狀況']
     TWSE_list = data_dict['歷年股價資訊']
 
-    print '\n'
+    print 'PBR\n'
 
     tmp_list = []
     for row in StockAssetsStatus_list:
@@ -191,7 +191,7 @@ def PBR(data_dict):
     print '\n'
     sum = 0
     for i in range(0, year):
-        print TWSE_list[i][6] + " / " + tmp_list[i][7]
+        print('%s / %s = %f' % (TWSE_list[i][6], tmp_list[i][7],float(TWSE_list[i][6]) / float(tmp_list[i][7]) ))
         sum += float(TWSE_list[i][6]) / float(tmp_list[i][7])
 
     print '\n'
@@ -271,7 +271,7 @@ def main():
     StockCodeList = [str(i)for i in fin.read().splitlines()]
     fin.close()
 
-    page = GetHtmlcode('4904')
+    page = GetHtmlcode('2103')
     dict_ = parse_stock(page)
     TWSE(dict_)
 
