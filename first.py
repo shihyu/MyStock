@@ -160,7 +160,7 @@ def PBR(data_dict):
     StockAssetsStatus_list = data_dict['資產負債狀況']
     TWSE_list = data_dict['歷年股價資訊']
 
-    print 'PBR\n'
+    print '股價淨值比(PBR)\n'
 
     tmp_list = []
     for row in StockAssetsStatus_list:
@@ -195,7 +195,7 @@ def PBR(data_dict):
         sum += float(TWSE_list[i][6]) / float(tmp_list[i][7])
 
     print '\n'
-    print sum / float(year)
+    print "股價淨值比%f" % (sum / float(year))
 
 def PER(data_dict):
     print "\nPER"
