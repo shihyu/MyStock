@@ -118,6 +118,8 @@ def pasre_stock_value(dict_):
 
     print '\n'
     print dict_['股票名稱']
+    print '\n'
+
     Dividends_list = []
 
     Dividends_list = dict_['股利']
@@ -160,7 +162,9 @@ def PBR(data_dict):
     StockAssetsStatus_list = data_dict['資產負債狀況']
     TWSE_list = data_dict['歷年股價資訊']
 
-    print '股價淨值比(PBR)\n'
+    # BPS（每股凈值產=凈資產/股票數）
+    # 如果BPS>股票價格，那么這個股票就可以買，相反就不能買。
+    print '股價淨值比(PBR) = 股價 / BSP(每股淨值)\n'
 
     tmp_list = []
     for row in StockAssetsStatus_list:
