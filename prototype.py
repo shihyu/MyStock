@@ -108,12 +108,13 @@ def GetStockHistoryInfo(page):
                '年均殖利率（%）']
 
     # Get the data <table></table>
-    regex = re.compile("<table class='std_tbl' width='100%'.*<\/table>")
+    #print page
+    regex = re.compile("<table\s*class='std_tbl'[\s\S]*?<\/table>")
     datatable = regex.findall(page)[0]
     #print type(datatable)
 
     # Get the data row <tr></tr>
-    regex = re.compile("<tr bgcolor=.*</tr>")
+    regex = re.compile("<tr[\s\S]*?\<\/tr\>")
     datarow = regex.findall(datatable)
     string = datarow[0].strip()
 

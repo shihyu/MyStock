@@ -140,6 +140,7 @@ def pasre_stock_value(dict_):
     return sum
 
 
+# 取得歷年股價資訊
 def TWSE(dict_):
     TWSEURL = 'http://www.twse.com.tw/ch/trading/exchange/FMNPTK/FMNPTK2.php?STK_NO=2103&myear=2014&mmon=09&type=csv'
     tmp_list = []
@@ -265,9 +266,10 @@ def historical_prices(data_dict):
         nominal_sum += float(TWSE_list[i][8]) # 平均價
 
     print '\n'
-    print cheap_sum/ float(year)
-    print expensive_sum / float(year)
-    print nominal_sum / float(year)
+
+    print('%s %f' % ("歷年股價法便宜價", cheap_sum/ float(year)))
+    print('%s %f' % ("歷年股價法平均價", nominal_sum / float(year)))
+    print('%s %f' % ("歷年股價法昂貴價", expensive_sum / float(year)))
 
 
 def main():
